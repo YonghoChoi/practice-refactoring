@@ -1,0 +1,55 @@
+apply plugin: 'base'
+apply plugin: 'idea'
+apply plugin: 'java'
+//apply plugin: 'war'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+    maven {
+        url uri('./mavenLocal')
+    }
+}
+
+
+ext {
+    slf4jVersion = '1.7.10'
+    logbackVersion = '1.0.13'
+    springframeworkVersion = '4.1.7.RELEASE'
+    junitVersion = '4.12'
+}
+
+List loggers = [
+        "org.slf4j:slf4j-api:${slf4jVersion}",
+        "org.slf4j:jcl-over-slf4j:${slf4jVersion}",
+        //"org.slf4j:log4j-over-slf4j:${slf4jVersion}",
+        "org.slf4j:jul-to-slf4j:${slf4jVersion}",
+        //"ch.qos.logback:logback-core:${logbackVersion}",
+        "ch.qos.logback:logback-classic:${logbackVersion}"
+]
+
+dependencies {
+    compile loggers
+
+    compile 'org.projectlombok:lombok:1.16.6'
+    compile 'org.bouncycastle:bcprov-jdk15on:1.54'
+    compile 'commons-codec:commons-codec:1.10'
+    compile 'mysql:mysql-connector-java:5.1.38'
+    compile 'com.google.guava:guava:18.0'
+
+    testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
+}
+
+configurations {
+    all.collect { configuration ->
+        configuration.exclude group: 'commons-logging', module: 'commons-logging'
+        //configuration.exclude group: 'log4j', module: 'log4j'
+        configuration.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+        configuration.exclude group: 'org.slf4j', module: 'slf4j-jcl'
+        configuration.exclude group: 'org.slf4j', module: 'slf4j-jdk14'
+    }
+}
