@@ -1,4 +1,4 @@
-package io.github.YonghoChoi.refectoring;
+package io.github.YonghoChoi.refactoring;
 
 import java.util.Enumeration;
 import java.util.Vector;
